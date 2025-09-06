@@ -31,10 +31,8 @@
       text-align: center;
       margin: 20px 15px;
     }
-    .banner img {
-      max-width: 500px;
-      width: 100%;
-      border-radius: 6px;
+    .banner p {
+      color: #FFFFFF;
     }
     table {
       width: 100%;
@@ -62,6 +60,15 @@
     input[type="checkbox"] {
       margin-right: 10px;
     }
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      box-sizing: border-box;
+      background-color: #2a2a2a;
+      color: #f8e6c1;
+      border: 1px solid #00FFFF;
+    }
     @media (max-width: 600px) {
       th, td {
         font-size: 14px;
@@ -84,7 +91,7 @@
           let y = rows[i + 1].getElementsByTagName("TD")[n];
           let xVal = x.innerText.toLowerCase();
           let yVal = y.innerText.toLowerCase();
-          if (n === 3 || n === 4) {
+          if (n === 3 || n === 4 || n === 5 || n === 6 || n === 7 || n === 8) {
             xVal = parseFloat(x.innerText) || 0;
             yVal = parseFloat(y.innerText) || 0;
           }
@@ -101,7 +108,27 @@
         if (switching) dir = dir === "asc" ? "desc" : "asc";
       }
     }
-
+    // Search function
+    function searchFunction() {
+      var input, filter, table, tr, tdName, tdDesc, i, txtName, txtDesc;
+      input = document.getElementById("search");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("abilitiesTable");
+      tr = table.getElementsByTagName("tr");
+      for (i = 1; i < tr.length; i++) {
+        tdName = tr[i].getElementsByTagName("td")[1];
+        tdDesc = tr[i].getElementsByTagName("td")[2];
+        if (tdName && tdDesc) {
+          txtName = tdName.textContent || tdName.innerText;
+          txtDesc = tdDesc.textContent || tdDesc.innerText;
+          if (txtName.toUpperCase().indexOf(filter) > -1 || txtDesc.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
     // Local storage for checkboxes
     function loadCheckboxes() {
       const checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -112,7 +139,6 @@
         }
       });
     }
-
     function saveCheckboxes() {
       const checkboxes = document.querySelectorAll('input[type="checkbox"]');
       checkboxes.forEach((checkbox, index) => {
@@ -121,7 +147,6 @@
         });
       });
     }
-
     // Initialize on page load
     window.onload = function() {
       loadCheckboxes();
@@ -135,6 +160,7 @@
       <span>Duel Warriors Abilities Checklist</span>
     </div>
 
+    <input type="text" id="search" onkeyup="searchFunction()" placeholder="Search for abilities by name or description...">
     <table id="abilitiesTable">
       <thead>
         <tr>
@@ -143,83 +169,85 @@
           <th onclick="sortTable(2)">Description</th>
           <th onclick="sortTable(3)">Can Use Time</th>
           <th onclick="sortTable(4)">Cooldown (s)</th>
+          <th onclick="sortTable(5)">Page</th>
+          <th onclick="sortTable(6)">Vid</th>
+          <th onclick="sortTable(7)">Everything</th>
+          <th onclick="sortTable(8)">Bugs</th>
         </tr>
       </thead>
       <tbody>
-        <tr><td><input type="checkbox"></td><td>Mad Shoot</td><td>Rapidly shoot surrounding enemies</td><td>2</td><td>20</td></tr>
-        <tr><td><input type="checkbox"></td><td>Deadly Hook</td><td>Pull enemies in front of you</td><td>1</td><td>12</td></tr>
-        <tr><td><input type="checkbox"></td><td>Earthshaker</td><td>Jump high and smash everything to the ground</td><td>1</td><td>16</td></tr>
-        <tr><td><input type="checkbox"></td><td>Dash Blast</td><td>Quickly dash forward and launch a fierce cannon attack</td><td>1</td><td>16</td></tr>
-        <tr><td><input type="checkbox"></td><td>Watermelon Spear</td><td>Throw a seed to trap the enemies, then charge at them</td><td>1</td><td>18</td></tr>
-        <tr><td><input type="checkbox"></td><td>Golden Cudgel</td><td>The stick will become very long, allowing it to hit distant enemies</td><td>1</td><td>14</td></tr>
-        <tr><td><input type="checkbox"></td><td>Demon's Grasp</td><td>Pull enemies towards you with lightning speed</td><td>1</td><td>16</td></tr>
-        <tr><td><input type="checkbox"></td><td>Undying Flame</td><td>Perform a wide range flame attack</td><td>1</td><td>17</td></tr>
-        <tr><td><input type="checkbox"></td><td>Energy Cannon</td><td>Fire an energy beam that ends with a big explosion</td><td>1</td><td>21</td></tr>
-        <tr><td><input type="checkbox"></td><td>Daibutsu</td><td>Transform into a giant and attack with fists only</td><td>1</td><td>18</td></tr>
-        <tr><td><input type="checkbox"></td><td>Phantom Spin</td><td>Spin yourself and take away all enemies</td><td>1</td><td>18</td></tr>
-        <tr><td><input type="checkbox"></td><td>Refresh Slash</td><td>If it hits an enemy, it can be continuously cast</td><td>1</td><td>15</td></tr>
-        <tr><td><input type="checkbox"></td><td>Spiked Ball</td><td>Throw giant spike balls forward to hit enemies in the front</td><td>3</td><td>10</td></tr>
-        <tr><td><input type="checkbox"></td><td>Joker Cards</td><td>Scatter 3 playing cards</td><td>2</td><td>17</td></tr>
-        <tr><td><input type="checkbox"></td><td>Tengu Flintlock</td><td>High damage capability with significant recoil</td><td>2</td><td>17</td></tr>
-        <tr><td><input type="checkbox"></td><td>War Boomerang</td><td>Boomerang that cannot be blocked by attacks or projectiles</td><td>1</td><td>15</td></tr>
-        <tr><td><input type="checkbox"></td><td>Ice Sword</td><td>Freezes enemies on hit</td><td>3</td><td>16</td></tr>
-        <tr><td><input type="checkbox"></td><td>Eagle Slingshot</td><td>Scatter 3 fireballs</td><td>2</td><td>15</td></tr>
-        <tr><td><input type="checkbox"></td><td>Boom Arrow</td><td>Explosive arrow with controllable distance</td><td>2</td><td>16</td></tr>
-        <tr><td><input type="checkbox"></td><td>Undead Orb</td><td>Scatter 5 magic explosive skeleton heads</td><td>1</td><td>15</td></tr>
-        <tr><td><input type="checkbox"></td><td>Burning Meteor</td><td>Causes a violent explosion upon contact</td><td>3</td><td>15</td></tr>
-        <tr><td><input type="checkbox"></td><td>Bind Arrow</td><td>Enemies hit will be bound to the ground by ropes</td><td>2</td><td>17</td></tr>
-        <tr><td><input type="checkbox"></td><td>Block Bomb</td><td>Stun enemies, followed by a massive explosion</td><td>2</td><td>15</td></tr>
-        <tr><td><input type="checkbox"></td><td>Fart</td><td>Make those who smell it unable to move and vomit</td><td>1</td><td>15</td></tr>
-        <tr><td><input type="checkbox"></td><td>Toilet Javelin</td><td>Stick to enemies' faces to immobilize them</td><td>1</td><td>14</td></tr>
-        <tr><td><input type="checkbox"></td><td>Snowball</td><td>Whirlwind enemies away and freeze them</td><td>1</td><td>16</td></tr>
-        <tr><td><input type="checkbox"></td><td>Trans.</td><td>Turn enemies into something everyone loves</td><td>1</td><td>24</td></tr>
-        <tr><td><input type="checkbox"></td><td>Holy Bomb</td><td>A volatile explosive you can hold briefly</td><td>1</td><td>11</td></tr>
-        <tr><td><input type="checkbox"></td><td>Thunder Staff</td><td>Track hit enemies and strike them with lightning bolts twice</td><td>1</td><td>20</td></tr>
-        <tr><td><input type="checkbox"></td><td>Tracking Bomb</td><td>Scatter 1 orbs that track enemies</td><td>1</td><td>15</td></tr>
-        <tr><td><input type="checkbox"></td><td>Poison</td><td>Apply ongoing damage to the enemy</td><td>1</td><td>18</td></tr>
-        <tr><td><input type="checkbox"></td><td>Caria</td><td>Charge up to create a massive sword slash forward, which can transform up to three times</td><td>1</td><td>15</td></tr>
-        <tr><td><input type="checkbox"></td><td>Red Ball Lightning</td><td>2024 Xmas Events. Launch a red lightning ball that traps enemies upon impact.</td><td>1</td><td>15</td></tr>
-        <tr><td><input type="checkbox"></td><td>Deadly Domain</td><td>2024 Xmas Events. Dash forward and create a domain that continuously traps enemies within it. It will be more useful in 2v2.</td><td>1</td><td>17</td></tr>
-        <tr><td><input type="checkbox"></td><td>WhirlWind</td><td>Spin while moving and launch continuous attacks</td><td>1</td><td>18</td></tr>
-        <tr><td><input type="checkbox"></td><td>Time Bomb</td><td>Throw three timed bombs consecutively that explode on contact or after a 1-second countdown</td><td>1</td><td>15</td></tr>
-        <tr><td><input type="checkbox"></td><td>Lava Bomb</td><td>Be careful! When the bomb shatters, lava inside will splatter</td><td>1</td><td>15</td></tr>
-        <tr><td><input type="checkbox"></td><td>Whirling Flash</td><td>Teleport in front of the enemy and deliver a slash. Can be cancelled by Roll</td><td>1</td><td>11</td></tr>
-        <tr><td><input type="checkbox"></td><td>Piercing Barrage</td><td>Perform consecutive forward thrusts</td><td>1</td><td>15</td></tr>
-        <tr><td><input type="checkbox"></td><td>Firework Cannon</td><td>Launch four firework shells, with the ability to switch skills during the firing intervals</td><td>4</td><td>18</td></tr>
-        <tr><td><input type="checkbox"></td><td>Firework Gatling</td><td>Fire 40 firework bullets in a Gatling-style burst, with the ability to switch skills during the firing intervals</td><td>40</td><td>40</td></tr>
-        <tr><td><input type="checkbox"></td><td>Shadow Spider</td><td>This is a spider that can track enemies, perhaps useful for ambushes...</td><td>1</td><td>15</td></tr>
-        <tr><td><input type="checkbox"></td><td>Dual Flame Slash</td><td>Perform 2 ultra-fast dash attacks.</td><td>1</td><td>17</td></tr>
-        <tr><td><input type="checkbox"></td><td>Automatic Turret</td><td>Automatically targets enemies and fires.</td><td>1</td><td>22</td></tr>
-        <tr><td><input type="checkbox"></td><td>Electric Shock Therapy</td><td>Fires a short-range electric current to paralyze enemies.</td><td>1</td><td>15</td></tr>
-        <tr><td><input type="checkbox"></td><td>Fierce Knockback</td><td>Fires a shotgun blast while leaping backward.</td><td>1</td><td>14</td></tr>
-        <tr><td><input type="checkbox"></td><td>World Ball</td><td>Kick a soccer ball with great force over long distances, allowing it to bounce and ricochet repeatedly.</td><td>1</td><td>20</td></tr>
-        <tr><td><input type="checkbox"></td><td>Cero</td><td>After charging, fires a massive energy beam forward.</td><td>1</td><td>12</td></tr>
-        <tr><td><input type="checkbox"></td><td>Getsuga Tenshou</td><td>Continuously fires wide-range sword slashes forward three times.</td><td>1</td><td>16</td></tr>
-        <tr><td><input type="checkbox"></td><td>Dragon's Breath</td><td>Emits a continuous stream of scorching flames, immobilizing enemies hit by the attack.</td><td>1</td><td>16</td></tr>
-        <tr><td><input type="checkbox"></td><td>HikiNaraku</td><td>Swing the mace with tremendous force to slam the ground, creating a powerful shockwave. Can be chained up to 3 times, with each strike reaching farther than the last.</td><td>1</td><td>14</td></tr>
-        <tr><td><input type="checkbox"></td><td>Auto Crossbow</td><td>Fires arrows rapidly to damage enemies. You can place up to 2 at a time.</td><td>2</td><td>22</td></tr>
-        <tr><td><input type="checkbox"></td><td>Umbrella Bouncer</td><td>Unfold the umbrella to deflect bullets, then dash forward to strike enemies.</td><td>1</td><td>14</td></tr>
-        <tr><td><input type="checkbox"></td><td>Popsicle Smash</td><td>Smash a massive popsicle to crush and freeze enemies in front.</td><td>1</td><td>17</td></tr>
-        <tr><td><input type="checkbox"></td><td>Range Blaster</td><td>A cannon that deals damage and stuns enemies on impact.</td><td>3</td><td>15</td></tr>
-        <tr><td><input type="checkbox"></td><td>Flaming Thunder God</td><td>Dash forward, damaging all enemies in your path. Charging longer increases dash distance.</td><td>1</td><td>16</td></tr>
-        <tr><td><input type="checkbox"></td><td>Sixfold Slash</td><td>Dashes forward. If it hits an enemy, you can attack again. Up to 6 hits in a row!</td><td>1</td><td>17</td></tr>
-        <tr><td><input type="checkbox"></td><td>Centipede: Serpent Slash</td><td>Invisible dash forward, invincible while pushing enemies and poisoning them. Ends with a reappearing thrust attack.</td><td>1</td><td>18</td></tr>
-        <tr><td><input type="checkbox"></td><td>Frozen Lotus</td><td>Swings war fan to slash in front and create icy mist, slowing and hurting enemies.</td><td>1</td><td>15</td></tr>
-        <tr><td><input type="checkbox"></td><td>Fierce Knockback</td><td>Fires a shotgun blast while leaping backward.</td><td>1</td><td>13</td></tr>
-        <tr><td><input type="checkbox"></td><td>Fireball Staff</td><td>Fire 5 flame orbs in succession Login on day 7 to claim</td><td>1</td><td>15</td></tr>
-        <tr><td><input type="checkbox"></td><td>Cupid's Arrow</td><td>Link yourself to the enemy for continuous attacks</td><td>1</td><td>18</td></tr>
-        <tr><td><input type="checkbox"></td><td>Refresh</td><td>Instantly cool down other skills</td><td>1</td><td>15</td></tr>
-        <tr><td><input type="checkbox"></td><td>Spring Jump</td><td>Jumps high and cancel Ragdoll</td><td>1</td><td>8</td></tr>
-        <tr><td><input type="checkbox"></td><td>Speed Up</td><td>Move quickly for a short time</td><td>1</td><td>12</td></tr>
-        <tr><td><input type="checkbox"></td><td>Outburst</td><td>Damage +100% in a very short time</td><td>1</td><td>19</td></tr>
-        <tr><td><input type="checkbox"></td><td>Invincible</td><td>Make yourself immune to all damage for a short time</td><td>1</td><td>8</td></tr>
-        <tr><td><input type="checkbox"></td><td>Mjolnir</td><td>Continuous electric shocks around the hammer</td><td>1</td><td>20</td></tr>
-        <tr><td><input type="checkbox"></td><td>Minefield</td><td>Scatter a large number of landmines and create explosions</td><td>1</td><td>25</td></tr>
-        <tr><td><input type="checkbox"></td><td>Energy Orb</td><td>Fire an energy orb forward. Longer charge time increases size of the orb</td><td>1</td><td>14</td></tr>
-        <tr><td><input type="checkbox"></td><td>Healing</td><td>Instantly restore some health</td><td>1</td><td>15</td></tr>
+        <tr><td><input type="checkbox"></td><td>Mad Shoot</td><td>Rapidly shoot surrounding enemies</td><td>2</td><td>20</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Deadly Hook</td><td>Pull enemies in front of you</td><td>1</td><td>12</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Earthshaker</td><td>Jump high and smash everything to the ground</td><td>1</td><td>16</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Dash Blast</td><td>Quickly dash forward and launch a fierce cannon attack</td><td>1</td><td>16</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Watermelon Spear</td><td>Throw a seed to trap the enemies, then charge at them</td><td>1</td><td>18</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Golden Cudgel</td><td>The stick will become very long, allowing it to hit distant enemies</td><td>1</td><td>14</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Demon's Grasp</td><td>Pull enemies towards you with lightning speed</td><td>1</td><td>16</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Undying Flame</td><td>Perform a wide range flame attack</td><td>1</td><td>17</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Energy Cannon</td><td>Fire an energy beam that ends with a big explosion</td><td>1</td><td>21</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Daibutsu</td><td>Transform into a giant and attack with fists only</td><td>1</td><td>18</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Phantom Spin</td><td>Spin yourself and take away all enemies</td><td>1</td><td>18</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Refresh Slash</td><td>If it hits an enemy, it can be continuously cast</td><td>1</td><td>15</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Spiked Ball</td><td>Throw giant spike balls forward to hit enemies in the front</td><td>3</td><td>10</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Joker Cards</td><td>Scatter 3 playing cards</td><td>2</td><td>17</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Tengu Flintlock</td><td>High damage capability with significant recoil</td><td>2</td><td>17</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>War Boomerang</td><td>Boomerang that cannot be blocked by attacks or projectiles</td><td>1</td><td>15</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Ice Sword</td><td>Freezes enemies on hit</td><td>3</td><td>16</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Eagle Slingshot</td><td>Scatter 3 fireballs</td><td>2</td><td>15</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Boom Arrow</td><td>Explosive arrow with controllable distance</td><td>2</td><td>16</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Undead Orb</td><td>Scatter 5 magic explosive skeleton heads</td><td>1</td><td>15</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Burning Meteor</td><td>Causes a violent explosion upon contact</td><td>3</td><td>15</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Bind Arrow</td><td>Enemies hit will be bound to the ground by ropes</td><td>2</td><td>17</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Block Bomb</td><td>Stun enemies, followed by a massive explosion</td><td>2</td><td>15</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Fart</td><td>Make those who smell it unable to move and vomit</td><td>1</td><td>15</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Toilet Javelin</td><td>Stick to enemies' faces to immobilize them</td><td>1</td><td>14</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Snowball</td><td>Whirlwind enemies away and freeze them</td><td>1</td><td>16</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Trans.</td><td>Turn enemies into something everyone loves</td><td>1</td><td>24</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Holy Bomb</td><td>A volatile explosive you can hold briefly</td><td>1</td><td>11</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Thunder Staff</td><td>Track hit enemies and strike them with lightning bolts twice</td><td>1</td><td>20</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Tracking Bomb</td><td>Scatter 1 orbs that track enemies</td><td>1</td><td>15</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Poison</td><td>Apply ongoing damage to the enemy</td><td>1</td><td>18</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Caria</td><td>Charge up to create a massive sword slash forward, which can transform up to three times</td><td>1</td><td>15</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Red Ball Lightning</td><td>2024 Xmas Events. Launch a red lightning ball that traps enemies upon impact.</td><td>1</td><td>15</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Deadly Domain</td><td>2024 Xmas Events. Dash forward and create a domain that continuously traps enemies within it. It will be more useful in 2v2.</td><td>1</td><td>17</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>WhirlWind</td><td>Spin while moving and launch continuous attacks</td><td>1</td><td>18</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Time Bomb</td><td>Throw three timed bombs consecutively that explode on contact or after a 1-second countdown</td><td>1</td><td>15</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Lava Bomb</td><td>Be careful! When the bomb shatters, lava inside will splatter</td><td>1</td><td>15</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Whirling Flash</td><td>Teleport in front of the enemy and deliver a slash. Can be cancelled by Roll</td><td>1</td><td>11</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Piercing Barrage</td><td>Perform consecutive forward thrusts</td><td>1</td><td>15</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Firework Cannon</td><td>Launch four firework shells, with the ability to switch skills during the firing intervals</td><td>4</td><td>18</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Firework Gatling</td><td>Fire 40 firework bullets in a Gatling-style burst, with the ability to switch skills during the firing intervals</td><td>40</td><td>40</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Shadow Spider</td><td>This is a spider that can track enemies, perhaps useful for ambushes...</td><td>1</td><td>15</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Dual Flame Slash</td><td>Perform 2 ultra-fast dash attacks.</td><td>1</td><td>17</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Automatic Turret</td><td>Automatically targets enemies and fires.</td><td>1</td><td>22</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Electric Shock Therapy</td><td>Fires a short-range electric current to paralyze enemies.</td><td>1</td><td>13</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Fierce Knockback</td><td>Fires a shotgun blast while leaping backward.</td><td>1</td><td>13</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>World Ball</td><td>Kick a soccer ball with great force over long distances, allowing it to bounce and ricochet repeatedly.</td><td>1</td><td>20</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Cero</td><td>After charging, fires a massive energy beam forward.</td><td>1</td><td>12</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Getsuga Tenshou</td><td>Continuously fires wide-range sword slashes forward three times.</td><td>1</td><td>16</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Dragon's Breath</td><td>Emits a continuous stream of scorching flames, immobilizing enemies hit by the attack.</td><td>1</td><td>16</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>HikiNaraku</td><td>Swing the mace with tremendous force to slam the ground, creating a powerful shockwave. Can be chained up to 3 times, with each strike reaching farther than the last.</td><td>1</td><td>14</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Auto Crossbow</td><td>Fires arrows rapidly to damage enemies. You can place up to 2 at a time.</td><td>2</td><td>22</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Umbrella Bouncer</td><td>Unfold the umbrella to deflect bullets, then dash forward to strike enemies.</td><td>1</td><td>14</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Popsicle Smash</td><td>Smash a massive popsicle to crush and freeze enemies in front.</td><td>1</td><td>17</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Range Blaster</td><td>A cannon that deals damage and stuns enemies on impact.</td><td>3</td><td>15</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Flaming Thunder God</td><td>Dash forward, damaging all enemies in your path. Charging longer increases dash distance.</td><td>1</td><td>16</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Sixfold Slash</td><td>Dashes forward. If it hits an enemy, you can attack again. Up to 6 hits in a row!</td><td>1</td><td>17</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Centipede: Serpent Slash</td><td>Invisible dash forward, invincible while pushing enemies and poisoning them. Ends with a reappearing thrust attack.</td><td>1</td><td>18</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Frozen Lotus</td><td>Swings war fan to slash in front and create icy mist, slowing and hurting enemies.</td><td>1</td><td>15</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Fireball Staff</td><td>Fire 5 flame orbs in succession Login on day 7 to claim</td><td>1</td><td>15</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Cupid's Arrow</td><td>Link yourself to the enemy for continuous attacks</td><td>1</td><td>18</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Refresh</td><td>Instantly cool down other skills</td><td>1</td><td>15</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Spring Jump</td><td>Jumps high and cancel Ragdoll</td><td>1</td><td>8</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Speed Up</td><td>Move quickly for a short time</td><td>1</td><td>12</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Outburst</td><td>Damage +100% in a very short time</td><td>1</td><td>19</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Invincible</td><td>Make yourself immune to all damage for a short time</td><td>1</td><td>8</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Mjolnir</td><td>Continuous electric shocks around the hammer</td><td>1</td><td>20</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Minefield</td><td>Scatter a large number of landmines and create explosions</td><td>1</td><td>25</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Energy Orb</td><td>Fire an energy orb forward. Longer charge time increases size of the orb</td><td>1</td><td>14</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+        <tr><td><input type="checkbox"></td><td>Healing</td><td>Instantly restore some health</td><td>1</td><td>15</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
       </tbody>
     </table>
   </div>
 </body>
 </html>
-
