@@ -16,16 +16,6 @@
       max-width: 800px;
       margin: 0 auto;
     }
-    .beta-notice {
-      text-align: center;
-      font-size: x-large;
-      padding: 1em;
-      background-color: #ffd9a0;
-      color: #000;
-      border-radius: 6px;
-      border: 1px solid #d4974f;
-      margin-bottom: 20px;
-    }
     .header {
       text-align: center;
       font-size: x-large;
@@ -80,6 +70,7 @@
     }
   </style>
   <script>
+    // Sorting function
     function sortTable(n) {
       let table = document.getElementById("abilitiesTable");
       let switching = true;
@@ -110,18 +101,42 @@
         if (switching) dir = dir === "asc" ? "desc" : "asc";
       }
     }
+
+    // Local storage for checkboxes
+    function loadCheckboxes() {
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach((checkbox, index) => {
+        const savedState = localStorage.getItem(`abilityCheckbox${index}`);
+        if (savedState === 'true') {
+          checkbox.checked = true;
+        }
+      });
+    }
+
+    function saveCheckboxes() {
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach((checkbox, index) => {
+        checkbox.addEventListener('change', () => {
+          localStorage.setItem(`abilityCheckbox${index}`, checkbox.checked);
+        });
+      });
+    }
+
+    // Initialize on page load
+    window.onload = function() {
+      loadCheckboxes();
+      saveCheckboxes();
+    };
   </script>
 </head>
 <body>
   <div class="container">
-    <div class="beta-notice">
-      ⚠️ This wiki is in beta! ⚠️<br>
-      ⭐ Any help is appreciated — feel free to join the <a href="https://discord.gg/pwTQYH9xZH">Discord</a> ⭐
-    </div>
     <div class="header">
       <span>Duel Warriors Abilities Checklist</span>
     </div>
- 
+    <div class="banner">
+      <img src="Screenshot 2025-05-13 205402.png" alt="Duel Warriors gameplay screenshot">
+    </div>
     <table id="abilitiesTable">
       <thead>
         <tr>
